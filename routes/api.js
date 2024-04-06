@@ -24,8 +24,11 @@ module.exports = function (app) {
   app.route("/api/solve").post((req, res) => {
     //log(req.body.puzzle);
     let puzzleStr = req.body.puzzle;
+    const validPuzzle = solver.validate(puzzleStr);
     const puzzleArr = stringToSudokuArray(puzzleStr)
-    console.log(puzzleArr);
+    //console.log(puzzleArr);
+    //console.log(puzzleArr[3][4]);
     //solver.solve(puzzleArr);
+    console.log("validPuzzle ", validPuzzle);
   });
 };
