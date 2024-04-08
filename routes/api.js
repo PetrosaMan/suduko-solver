@@ -5,30 +5,24 @@ const SudokuSolver = require("../controllers/sudoku-solver.js");
 module.exports = function (app) {
   let solver = new SudokuSolver();
 
-  function stringToSudokuArray(puzzleStr) {
-    // convert puzzle string to a two dimension array
-    if (puzzleStr.length !== 81) throw new Error('Invalid puzzle string length');    
-    let grid = [];
-    for (let i = 0; i < puzzleStr.length; i += 9) {
-      grid.push(puzzleStr.substring(i, i + 9).split(''));
-    }
-    return grid;
-  }
-
-
   app.route("/api/check").post((req, res) => {
-    console.log("Check Placement");    
+    console.log("Check Placement");
     res.json({ checkPlacement: "checkPlacement" });
-  });
+
+  }); // app.route
 
   app.route("/api/solve").post((req, res) => {
-    //log(req.body.puzzle);
-    let puzzleStr = req.body.puzzle;
-    const validPuzzle = solver.validate(puzzleStr);
-    const puzzleArr = stringToSudokuArray(puzzleStr)
-    //console.log(puzzleArr);
-    //console.log(puzzleArr[3][4]);
-    //solver.solve(puzzleArr);
-    console.log("validPuzzle ", validPuzzle);
-  });
-};
+    const puzzleString = req.body.puzzle;
+    if (!puzzleString) {
+      res.json({ error: "Required field missing" });
+    } else if (puzzleString.length > 81 || puzzleString.length < 81) {
+      res.json({ error: "Expected puzzle to be 81 characters long" });
+    } else if (!solver.validate(puzzleString)) {
+      res.json({ error: "Invalid characters in puzzle" });
+    } // end if-else 
+    console.log(puzzleString.length);
+
+  }); // app.route
+
+
+};  // module.exports

@@ -2,11 +2,21 @@
 
 class SudokuSolver {
 
+  stringToSudokuArray(puzzleString) {
+    // convert puzzle string to a two dimension array
+    if (puzzleString.length !== 81) throw new Error('Invalid puzzle string length');    
+    let grid = [];
+    for (let i = 0; i < puzzleString.length; i += 9) {
+      grid.push(puzzleString.substring(i, i + 9).split(''));
+    }
+    return grid;
+  }
+
   validate(puzzleString) {   
     const regex = /^[1-9.]{81}$/;
-    const validString = regex.test(puzzleString); 
-    //console.log('validString: ',validString )   
-    return validString;
+    const validString = regex.test(puzzleString);       
+    return validString; 
+    //console.log(validString);   
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
@@ -21,11 +31,11 @@ class SudokuSolver {
 
   }
 
-  solve(puzzleArr) {    
-    //this.validate(puzzleArr);
-    //console.log("valid-result ", puzzleArr)
+  solve(puzzleString) {       
+    
   }
-}
+
+} // end of class
 
 module.exports = SudokuSolver;
 
