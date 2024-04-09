@@ -12,17 +12,24 @@ module.exports = function (app) {
   }); // app.route
 
   app.route("/api/solve").post((req, res) => {
-    const puzzleString = req.body.puzzle;
-    if (!puzzleString) {
+    const { puzzle } = req.body;
+    if (!puzzle) {
       res.json({ error: "Required field missing" });
-    } else if (puzzleString.length > 81 || puzzleString.length < 81) {
+      return;
+    }
+    if (puzzle.length != 81) {
       res.json({ error: "Expected puzzle to be 81 characters long" });
-    } else if (!solver.validate(puzzleString)) {
-      res.json({ error: "Invalid characters in puzzle" });
-    } // end if-else 
-    console.log(puzzleString.length);
-
+      return;
+    }    
+    if (/[^1-9.]/g.test(puzzle)) {
+      res.json({ error: "Invalid characters in puzzle" })
+      return; 
+    }
+    let solvedString = solver.solve(puzzle);
+    if(!solvedString) {
+        res.json({ error: "Puzzle cannot be solved" });
+    } else {
+        res.json({ solution: solvedString});
+    } 
   }); // app.route
-
-
-};  // module.exports
+}; // end of function module.exports 
