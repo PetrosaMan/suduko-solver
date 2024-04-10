@@ -168,3 +168,189 @@ else
 
 </script>
 
+****************************** api checks ********************
+
+app.route("/app/check").post((req, res) => {
+
+    const { puzzle, coordinate, value } = req.body;
+    if (!puzzle || !coordinate || !value) {
+         res.json({ error: "Required field(s) missing"});
+         return;
+    }
+    
+     const row = coordinate.split("")[0];
+     const column = coordinate.split("")[1];
+
+     if ( coordinate.length !== 2 || !/[a-i]/i.test(row) || !/[1-9]/i.test(column)) {
+        console.log("Invalid coordinate");
+        res.json({ error: "Invalid coordinate"});
+        return;
+     }
+
+     if ( !/[1-9]i.test(value)) {
+        res.json({ error: "Invalid value"});
+        return;
+     } 
+     
+     if (puzzle.length != 81) {
+         res.json({ error: "Expected puzzle to be 81 characters long" });
+         return;  
+     }
+
+     if (/[^0-9.]/g.test(puzzle)) {
+        res.json({ error: "Invalid character(s) in puzzle" });
+        return;
+     }
+
+     /////////////////////// Check rows and columns:
+
+    let validColumn = solver.checkColPlacement(puzzle, row, column, value);
+    let validRegion = solver.checkColPlacement(puzzle, row, column, value);
+    let validRow = solver.checkColPlacement(puzzle, row, column, value); 
+    let conflicts = [];
+   
+    if( validColumn && validRegion && validRow ) {
+        res.json({ valid: true });
+    } else { 
+        if (!validRow){
+         conflicts.push("row");
+    } 
+
+     if( !validColumn ) {
+       conflicts.push("column");
+     } 
+
+     if( !validRegion) {
+        conflicts.push("region");
+     }
+
+     res.json({ valid: false, conflicts: conflicts }); 
+    }
+
+});
+
+// ******** All the folowing code to be inside PuzzleSolver class
+
+letterToNumber(row) {
+  let rowNum;  
+    switch (row.toUpperCase()) {
+       case "A": 
+         rowNum = 1;
+         break;
+       case "B":
+         rowNum = 2;
+         break;
+       case "C": 
+         rowNum = 3;
+         break;
+       case "D":
+         rowNum = 4;
+         break;
+       case "E": 
+         rowNum =5;
+         break;
+       case "F":
+         rowNum = 6;
+         break;
+        case "G": 
+         rowNum = 7;
+         break;
+       case "H":
+         rowNum = 8;
+         break;
+       case "I":
+         rowNum = 9;
+         break;
+       default:
+         return "Invalid letterToNumber";
+    }
+    return rowNum;
+}
+
+
+// check row placement
+checkRowPlacement (puzzleString, row, column, value) {
+    let grid = this.transform(puzzleString);
+    row = this.letterToNumber(row);
+    if( grid[row - 1][column - 1] !== 0) {
+       return false;
+    }
+    for ( let i = 0; i < 9; i++ ) {
+        if( grid[row - 1][i] == value ) {
+           return false
+        }
+    }
+    return true;
+}
+
+
+// check column placement
+checkColumnPlacement (puzzleString, row, column, value) {
+    let grid = this.transform(puzzleString);
+    row = this.letterToNumber(row);
+    if( grid[row - 1][column - 1] !== 0) {
+       return false;
+    }
+    for ( let i = 0; i < 9; i++ ) {
+        if( grid[i][column - 1] == value ) {
+           return false
+        }
+    }
+    return true;
+}
+
+// check region placement
+
+checkRegionPlacement (puzzleString, row, column, value) {
+    let grid = this.transform(puzzleString);
+    row = this.letterToNumber(row);
+    if( grid[row - 1][column - 1] !== 0) {
+       return false;
+    }
+    let startRow = row - (row % 3),
+     startColumn = column - ( column % 3);
+    for(let i = 0; i < 3; i++) 
+        for(let j = 0; j < 3; j++)
+            if( grid[ i + startRow ][ j + startColumn ] == value)
+                  return false;
+     return true;
+}
+
+ //// ************** end of position tests
+
+
+// route "/api/check"  additional code to run checks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
