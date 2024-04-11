@@ -37,13 +37,15 @@ class SudokuSolver {
 
   checkRowPlacement(puzzle, row, column, value) {
     let grid = this.transform(puzzle);
-    row = this.letterToNumber(row);
+    row = this.letterToNumber(row);    
+    if (grid[row - 1][column - 1] == value) 
+        return true; // ok to place same value in square
     if( grid[row - 1][column - 1] !== 0) {
        return false;
     }
     for ( let i = 0; i < 9; i++ ) {
         if( grid[row - 1][i] == value ) {
-           return false
+           return false;
         }
     }
     return true;
@@ -52,12 +54,14 @@ class SudokuSolver {
   checkColPlacement(puzzle, row, column, value) {
     let grid = this.transform(puzzle);
     row = this.letterToNumber(row);
+    if( grid[row - 1][column - 1] == value)
+      return true;  // ok to place same value
     if( grid[row - 1][column - 1] !== 0) {
        return false;
     }
     for ( let i = 0; i < 9; i++ ) {
         if( grid[i][column - 1] == value ) {
-           return false
+           return false;
         }
     }
     return true;
@@ -65,7 +69,7 @@ class SudokuSolver {
 
   checkRegionPlacement(puzzle, row, column, value) {
     let grid = this.transform(puzzle);
-    row = this.letterToNumber(row);
+    row = this.letterToNumber(row);    
     if( grid[row - 1][column - 1] !== 0) {
        return false;
     }

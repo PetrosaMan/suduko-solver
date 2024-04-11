@@ -205,7 +205,7 @@ app.route("/app/check").post((req, res) => {
      /////////////////////// Check rows and columns:
 
     let validColumn = solver.checkColPlacement(puzzle, row, column, value);
-    let validRegion = solver.checkColPlacement(puzzle, row, column, value);
+    let validRegion = solver.checkRegionPlacement(puzzle, row, column, value);
     let validRow = solver.checkColPlacement(puzzle, row, column, value); 
     let conflicts = [];
    
