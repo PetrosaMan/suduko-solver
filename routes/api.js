@@ -57,7 +57,7 @@ module.exports = function (app) {
  
       res.json({ valid: false, conflicts: conflicts }); 
      }
-  }); // app.route
+  }); // route "/api/check"
 
   app.route("/api/solve").post((req, res) => {
     const { puzzle } = req.body;
@@ -79,5 +79,5 @@ module.exports = function (app) {
     } else {
         res.json({ solution: solvedString});
     } 
-  }); // app.route
+  }); // /api/solve
 }; // end of function module.exports 
