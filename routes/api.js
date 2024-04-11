@@ -38,24 +38,22 @@ module.exports = function (app) {
      let validColumn = solver.checkColPlacement(puzzle, row, column, value);
      let validRegion = solver.checkRegionPlacement(puzzle, row, column, value);
      let validRow = solver.checkRowPlacement(puzzle, row, column, value); 
-     let conflicts = [];
+     let conflict = [];
      console.log(validColumn, validRegion,validRow);
      if( validColumn && validRegion && validRow ) {
          res.json({ valid: true });
      } else { 
          if (!validRow){
-          conflicts.push("row");
-     } 
+          conflict.push("row");
+        }       
+        if( !validColumn ) {
+          conflict.push("column");
+        } 
+        if( !validRegion) {
+           conflict.push("region");
+        }
  
-      if( !validColumn ) {
-        conflicts.push("column");
-      } 
- 
-      if( !validRegion) {
-         conflicts.push("region");
-      }
- 
-      res.json({ valid: false, conflicts: conflicts }); 
+      res.json({ valid: false, conflict: conflict }); 
      }
   }); // route "/api/check"
 
