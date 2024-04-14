@@ -29,8 +29,8 @@ module.exports = function (app) {
          res.json({ error: "Expected puzzle to be 81 characters long" });
          return;  
      }
-
-     if (/[^0-9.]/g.test(puzzle)) {
+     // check if this shoulbe 0-9 or 1-9
+     if (/[^1-9.]/g.test(puzzle)) {
         res.json({ error: "Invalid characters in puzzle" });
         return;
      }
@@ -72,6 +72,7 @@ module.exports = function (app) {
       return; 
     }
     let solvedString = solver.solve(puzzle);
+    //console.log(solvedString);
     if(!solvedString) {
         res.json({ error: "Puzzle cannot be solved" });
     } else {

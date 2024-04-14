@@ -1,0 +1,22 @@
+    	
+
+const Solver = require('../controllers/sudoku-solver.js');
+
+let solver;
+
+let validPuzzle = '5..91372.3...8.5.9.9.25..8.68.47.23...95..46.7.4.....5.2.......4..8916..85.72...3';
+
+suite('UnitTests', () => {
+    suite("solver tests", () => {
+      test('Logic handles puzzle string of 81 characters', (done) => {
+	let complete = "568913724342687519197254386685479231219538467734162895926345178473891652851726943";
+        assert.equal(solver.solve(validPuzzle), complete);        
+        done();
+    }
+
+    });
+
+});
+
+solved:  "568913724342687519197254386685479231219538467734162895926345178473891652851726943"
+
