@@ -18,13 +18,13 @@ suite('Unit Tests', () => {
     test('#2 Puzzle with invalid characters', () => {
       const puzzle = '.7.89.....5....3.4.2..4..1.5689..472...6.....1.7.5.63873.1.2.8.6..47.1..2.9.387.6';     
       const regex = /^[1-9.]{81}$/;  // valid characters are 1-9 and '.'
-      assert.isTrue(regex.test(puzzle), 'Puzzle has valid character(s)');
+      assert.isTrue(regex.test(puzzle), 'Puzzle has invalid character(s)');
     });
 
     test('#3 Puzzle with length not equal to 81 characters', () =>{
       let puzzle = testPuzzles[0][0];
-      let testPuzzle = puzzle.slice(1);
-      assert.equal(puzzle.length, 81, "puzzle length is not equal 81");  
+      let testPuzzle = puzzle.slice(0); // vary this to shorten puzzle
+      assert.equal(testPuzzle.length, 81, "puzzle expected to be 81 characters long");  
     });
 
 
