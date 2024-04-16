@@ -43,7 +43,7 @@ class SudokuSolver {
     if( grid[row - 1][column - 1] !== 0) {
        return false;
     }
-    for ( let i = 0; i < 9; i++ ) {
+    for ( let i = 0; i < 9; i++ ) { // Is i=0 correct? should be 1??
         if( grid[row - 1][i] == value ) {
            return false;
         }
